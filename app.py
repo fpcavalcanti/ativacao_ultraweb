@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 import json
-
+from models import  CSNRequest
 app = Flask(__name__)
 
 web_service_version = 0.1
@@ -22,9 +22,11 @@ def do_ativacao():
     o_body = request.get_data()
     json_data = json.loads(o_body)
 
-    response_obj = {
-        'status': True,
-        'received': json_data
-    }
+    if json_data['event']['name'] in ['close', 'auto_close', 'sign']:
+        #     proc aqui o armazenamento da requisicao
+        print('persistir req')
+        CSNRequest.create(objeto=json_data)
+    else:
+        print('retorno sem persistir')
 
-    return response_obj
+    return {'status': True}

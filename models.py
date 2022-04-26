@@ -1,4 +1,6 @@
 from peewee import *
+import json
+import datetime
 
 mysql_db = MySQLDatabase('db_producao', user='root', password='qwerty',
                          host='localhost', port=3306)
@@ -129,3 +131,20 @@ class Equipamento(BaseModel):
 
     def get_modo(self):
         return "Datamapper" if self.equipamento_equipamentomodo_id_fk == 6 else "Webtouch"
+
+class JSONField(TextField):
+    def db_value(self, value):
+        return json.dumps(value)
+
+    def python_value(self, value):
+        if value is not None:
+            return json.loads(value)
+
+class CSNRequest(BaseModel):
+    codigo = IntegerField(primary_key=True, unique=True)
+    objeto = JSONField()
+    data_requisicao = DateTimeField(default=datetime.datetime.now())
+    status_proc = IntegerField(default=0)
+
+    class Meta:
+        table_name = 'csn_request'

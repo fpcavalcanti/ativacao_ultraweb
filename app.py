@@ -1,6 +1,9 @@
-from flask import Flask, jsonify, request
 import json
-from models import  CSNRequest
+
+from flask import Flask, request
+
+from models import CSNRequest
+
 app = Flask(__name__)
 
 web_service_version = 0.1

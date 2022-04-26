@@ -1,6 +1,7 @@
-from peewee import *
-import json
 import datetime
+import json
+
+from peewee import *
 
 mysql_db = MySQLDatabase('db_producao', user='root', password='qwerty',
                          host='localhost', port=3306)

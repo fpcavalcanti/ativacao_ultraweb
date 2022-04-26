@@ -32,6 +32,18 @@ class Lavanderia(BaseModel):
     lavanderia_nome = CharField()
     lavanderia_servicoativo = CharField()
     lavanderia_contacliente_id_fk = IntegerField()
+    lavanderia_numero = IntegerField()
+    lavanderia_telefone = CharField()
+    lavanderia_inicio_jornada = TimeField()
+    lavanderia_final_jornada = TimeField()
+    lavanderia_tempomedio_processo = IntegerField()
+    lavanderia_sinc_custo_quimico = CharField()
+    lavanderia_custoagua = DoubleField()
+    lavanderia_custoenergia = DoubleField()
+    lavanderia_custovapor = DoubleField()
+    lavanderia_custokg = DoubleField()
+    lavanderia_tiposupervisao = IntegerField()
+    lavanderia_data_cadastro = DateField()
 
     def get_conta(self):
         if not self.lavanderia_contacliente_id_fk is None:
@@ -93,6 +105,7 @@ class UsuarioLavanderia(BaseModel):
     usuariolavanderia_id = IntegerField(primary_key=True, unique=True)
     usuariolavanderia_usuario_id_fk = IntegerField()
     usuariolavanderia_lavanderia_id_fk = IntegerField()
+    usuariolavanderia_data_cadastro = DateField()
 
     class Meta:
         table_name = 'usuariolavanderia'

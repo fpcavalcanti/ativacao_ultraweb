@@ -4,6 +4,10 @@ from flask import Flask, request
 
 from models import CSNRequest
 
+from threading import Timer
+
+import datetime
+
 app = Flask(__name__)
 
 web_service_version = 0.1
@@ -24,12 +28,25 @@ def do_ativacao():
 
     o_body = request.get_data()
     json_data = json.loads(o_body)
-
-    if json_data['event']['name'] in ['close', 'auto_close', 'sign']:
+    # ['close', 'auto_close', 'sign']
+    if json_data['event']['name'] in ['sign']:
         #     proc aqui o armazenamento da requisicao
         print('persistir req')
-        CSNRequest.create(objeto=json_data)
+        req = CSNRequest.create(objeto=json_data)
+        print(req)
+
+        thread = Timer(2, run_ativacao, ([req]))
+        thread.start()
     else:
         print('retorno sem persistir')
 
+    print(f'requisicao finalizada em: {datetime.datetime.now()}')
     return {'status': True}
+
+def run_ativacao(args):
+    print(f'ativacao executada pós retorno web em: {datetime.datetime.now()}')
+    print(f'executar codigo: {args}')
+
+    # req = CSNRequest.get(CSNRequest.codigo == args).get()
+    #
+    # print(f'Nome da empresa: {req.objeto["event"]["data"]["user"]["name"]}')
